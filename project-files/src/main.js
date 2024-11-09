@@ -42,7 +42,7 @@ function (error) {
 );
 
 
-controls.maxPolarAngle =  Math.PI * 0.4;
+controls.maxPolarAngle =  Math.PI * 0.45;
 controls.maxTargetRadius = 20;
 //scene.background = new THREE.Color ( 0x447da0  );
 renderer.setSize( window.innerWidth, window.innerHeight );

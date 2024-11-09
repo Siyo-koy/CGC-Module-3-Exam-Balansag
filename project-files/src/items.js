@@ -274,6 +274,26 @@ export function createFoundation(){
   return foundation;
 }
 
+function createTowerWindow(){
+  const windows = new THREE.Group();
+  const blackMaterial = new THREE.MeshToonMaterial({color: 0x222222});
+  const window1Geometry = new THREE.BoxGeometry(.2,.4,.04);
+  const windowLight = new THREE.MeshStandardMaterial({color:0xFFE8A0, emissiveIntensity: 10});
+
+  const window1 = new THREE.Mesh(window1Geometry,blackMaterial);
+  const window2 = new THREE.Mesh(window1Geometry,blackMaterial);
+  const window3 = new THREE.Mesh(window1Geometry,windowLight);
+  const window4 = new THREE.Mesh(window1Geometry,blackMaterial);
+
+  window1.position.set(0.15,0,0);
+  window2.position.set(0,2.5,0);
+  window3.position.set(0,4.25,0);
+  window4.position.set(-0.15,0,0);
+
+  windows.add(window1,window2,window3,window4);
+  return windows;
+}
+
 export function createHouse(){
     const house = new THREE.Group();
     const wallTexture = new THREE.TextureLoader().load('models/textures/wall texture.png'); 
@@ -299,6 +319,7 @@ export function createHouse(){
     const floorGeometry = new THREE.BoxGeometry(1.5,.3,3);
     const window1Geometry = new THREE.BoxGeometry(.2,.4,.04);
     const window2Geometry = new THREE.BoxGeometry(.04,.4,.2);
+    const doorGeometry = new THREE.BoxGeometry(.04,1,0.6)
     
     const topWallLong = new THREE.Mesh(topWallLongGeometry, wallMaterial);
     const topWallShort = new THREE.Mesh(topWallShortGeometry,wallMaterial);
@@ -328,6 +349,7 @@ export function createHouse(){
     const towerLining6 = new THREE.Mesh(towerLiningGeometry, woodMaterial);
     const column = new THREE.Mesh(houseLiningGeometry, woodMaterial);
     const floor = new THREE.Mesh(floorGeometry,brickMaterial);
+    const door = new THREE.Mesh(doorGeometry,blackMaterial);
     
     const window1 = new THREE.Mesh(window1Geometry,blackMaterial);
     const window2 = new THREE.Mesh(window1Geometry,blackMaterial);
@@ -342,6 +364,13 @@ export function createHouse(){
     const window10 = new THREE.Mesh(window2Geometry, blackMaterial);
     const window11 = new THREE.Mesh(window2Geometry, blackMaterial);
     const window12 = new THREE.Mesh(window2Geometry, blackMaterial);
+
+    const towerWindow1 = createTowerWindow();
+    const towerWindow2 = createTowerWindow();
+    const towerWindow3 = createTowerWindow();
+    const towerWindow4 = createTowerWindow();
+    const towerWindow5 = createTowerWindow();
+
 
     window1.position.set(2,2,1);    
     window2.position.set(1.2,2,1);    
@@ -394,6 +423,13 @@ export function createHouse(){
     brickLining4.position.set(0.45,0,2.95);
     column.position.set(1.85,-.25,2.91);
     floor.position.set(1.15,-1,1.4);
+    door.position.set(0.5,-0.2,2);
+
+    towerWindow1.position.set(-0.5,0,5.6);
+    towerWindow2.position.set(0.59,0,4.8);
+    towerWindow3.position.set(-1.8,0,3.65);
+    towerWindow4.position.set(0.5,0,3.5);
+    towerWindow5.position.set(-1.7,0,5);
 
     tower.rotation.y = 77;
     towerRoof.rotation.y = 77;
@@ -404,10 +440,15 @@ export function createHouse(){
     lowerRoof.rotation.z = -0.3;
     brickLining2.rotation.y = Math.PI / 2;
     brickLining3.rotation.y = Math.PI / 2;
+    towerWindow2.rotation.y = 1.1;
+    towerWindow3.rotation.y = 1.1;
+    towerWindow4.rotation.y = 2.3;
+    towerWindow5.rotation.y = 2.3;
 
     house.add(topWallLong, topWallShort, bottomWallLong, bottomWallShort,tower, roof1, roof2, roof3, roof4, towerRoof, lowerRoof);
     house.add(longLining, shortLining, triangle1, roofBorder, houseLining1, houseLining2, houseLining3, houseLining4, houseLining5, houseLining6);
     house.add(towerLining1, towerLining2, towerLining3, towerLining4, towerLining5, towerLining6, brickLining1, brickLining2, brickLining3, brickLining4);
     house.add(column, floor, window1, window2, window3, window4, window5, window6, window7, window8, window9, window10, window11, window12);
+    house.add(towerWindow1, towerWindow2, towerWindow3, towerWindow4, towerWindow5, door);
     return house;
 }
