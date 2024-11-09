@@ -1,6 +1,16 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader';
-import { floor } from 'three/webgpu';
+
+export function createCloud(){
+  const cloudMaterial = new THREE.MeshToonMaterial({color: 0x767676});
+  const sizex = Math.random() * (10 - 1) + 1;
+  const sizey = Math.random() * (2 - 1) + 1;
+  const sizez = Math.random() * (10 - 1) + 1;
+  const cloudGeometry = new THREE.BoxGeometry(sizex,sizey,sizez);
+  const cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+
+  return cloud;
+}
 
 export function createBush(){
   const geometry = new THREE.SphereGeometry(.5, 8, 16,9,Math.PI * 2, 9, Math.PI*6);
@@ -39,24 +49,68 @@ export function createRock() {
 
 export function createTree() {
     const tree = new THREE.Group();
-  
-    // Load a GLTF model (palm tree) and add it to the room
-    const gltfLoader = new GLTFLoader();
-    gltfLoader.load(
-      './models/pine tree.gltf', // Path to your GLTF model
-      (gltf) => {
-        // When the model is loaded, add it to the room
-        const treeModel = gltf.scene;
-        treeModel.scale.set(1, 1, 1); // Adjust scale if needed
-        treeModel.position.set(0,0, 0); // Adjust position as needed
-  
-        tree.add(treeModel);
-      }
-    );
-  
+    
+    const woodMaterial = new THREE.MeshToonMaterial({color: 0x5A4237});
+    const topMaterial = new THREE.MeshToonMaterial({color: 0x2B3829});
+    const midMaterial = new THREE.MeshToonMaterial({color: 0x242F23});
+    const bottomMaterial = new THREE.MeshToonMaterial({color: 0x1F271E});
+    
+    const trunkGeometry = new THREE.CylinderGeometry(.1,.1,4,8);
+    const topGeometry = new THREE.ConeGeometry(.5, 1, 6);
+    const midGeometry = new THREE.ConeGeometry(1, 2, 6);
+    const bottomGeometry = new THREE.ConeGeometry(1.4, 2.5, 6);
+
+    const trunk = new THREE.Mesh(trunkGeometry, woodMaterial);
+    const top = new THREE.Mesh(topGeometry, topMaterial);
+    const mid = new THREE.Mesh(midGeometry, midMaterial);
+    const bottom = new THREE.Mesh(bottomGeometry, bottomMaterial);
+
+    top.position.y = 2.5;
+    mid.position.y = 1.5;
+    bottom.position.y = .5;
+
+    tree.add(trunk, top, mid, bottom);
     return tree;
-  }
+}
+
+export function createRoundTree(){
+  const tree = new THREE.Group();
+    
+  const woodMaterial = new THREE.MeshToonMaterial({color: 0x635F58});
   
+  const trunkGeometry = new THREE.CylinderGeometry(.1,.2,4,8);
+  const branchGeometry = new THREE.CylinderGeometry(.05,.1,1.5,8);
+
+  const trunk1 = new THREE.Mesh(trunkGeometry, woodMaterial);
+  const trunk2 = new THREE.Mesh(trunkGeometry, woodMaterial);
+  const branch1 = new THREE.Mesh(branchGeometry, woodMaterial);
+  const branch2 = new THREE.Mesh(branchGeometry, woodMaterial);
+
+  trunk2.position.set(.4, -0.05,0);
+  branch1.position.set(.05,1.5,.4);
+  branch2.position.set(.45,1.5,-0.2);
+
+  branch1.rotation.x = 0.5;
+  trunk2.rotation.z = -0.3;
+
+  branch2.rotation.x = 0.5;
+  branch2.rotation.z = 2.2;
+  branch2.rotation.y = 2;
+
+  // leaves
+  const geometry = new THREE.SphereGeometry(2.5, 6, 16,9,Math.PI * 2, 9, Math.PI*6);
+
+  // Material and mesh
+  const leavesMaterial = new THREE.MeshToonMaterial({ color: 0x6F503C});
+
+  const leaves = new THREE.Mesh(geometry, leavesMaterial);
+
+  leaves.position.y = 3.5;
+
+  tree.add(trunk1, trunk2, branch1, branch2, leaves);
+  return tree;  
+}
+
 
 export function createWater(){
     const water = new THREE.Group();
